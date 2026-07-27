@@ -11,719 +11,127 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #f5f7fa;
-            color: #1a1a2e;
-            padding: 20px;
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 24px;
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-        }
-
-        .header h1 {
-            font-size: 22px;
-            font-weight: 700;
-            color: #1a1a2e;
-        }
-        .header h1 i {
-            color: #4f8cf7;
-            margin-right: 10px;
-        }
-        .header .subtitle {
-            color: #64748b;
-            font-size: 13px;
-        }
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-        .status-badge.online {
-            background: #dcfce7;
-            color: #16a34a;
-        }
-        .status-badge.offline {
-            background: #fee2e2;
-            color: #dc2626;
-        }
-        .status-badge .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-        .status-badge.online .dot {
-            background: #16a34a;
-        }
-        .status-badge.offline .dot {
-            background: #dc2626;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .search-box {
-            display: flex;
-            align-items: center;
-            background: #f1f5f9;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 6px 14px;
-            gap: 10px;
-        }
-        .search-box input {
-            background: transparent;
-            border: none;
-            outline: none;
-            color: #1a1a2e;
-            font-size: 14px;
-            font-family: 'Inter', sans-serif;
-            width: 200px;
-        }
-        .search-box input::placeholder {
-            color: #94a3b8;
-        }
-        .search-box i {
-            color: #94a3b8;
-        }
-
-        .btn {
-            padding: 8px 18px;
-            border-radius: 10px;
-            border: 1px solid #e2e8f0;
-            background: #ffffff;
-            color: #1a1a2e;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            font-family: 'Inter', sans-serif;
-            transition: 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .btn:hover {
-            background: #f1f5f9;
-            border-color: #4f8cf7;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #4f8cf7, #7c3aed);
-            border: none;
-            color: #fff;
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(79, 140, 247, 0.3);
-        }
-        .btn-success {
-            background: #10b981;
-            border: none;
-            color: #fff;
-        }
-        .btn-success:hover {
-            background: #059669;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .stat-box {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 12px 16px;
-            text-align: center;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-        }
-        .stat-box .num {
-            font-size: 24px;
-            font-weight: 700;
-        }
-        .stat-box .label {
-            font-size: 11px;
-            color: #64748b;
-            margin-top: 2px;
-        }
-        .stat-box .num.green {
-            color: #10b981;
-        }
-        .stat-box .num.red {
-            color: #ef4444;
-        }
-        .stat-box .num.yellow {
-            color: #f59e0b;
-        }
-        .stat-box .num.purple {
-            color: #7c3aed;
-        }
-        .stat-box .num.blue {
-            color: #4f8cf7;
-        }
-
-        .category-filter {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 16px;
-            padding: 12px 16px;
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            align-items: center;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-        }
-        .category-filter .filter-label {
-            color: #64748b;
-            font-size: 13px;
-            font-weight: 600;
-            margin-right: 8px;
-        }
-        .category-btn {
-            padding: 6px 14px;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
-            background: #f8fafc;
-            color: #64748b;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 500;
-            font-family: 'Inter', sans-serif;
-            transition: 0.2s;
-            white-space: nowrap;
-        }
-        .category-btn:hover {
-            background: #e2e8f0;
-            border-color: #4f8cf7;
-            color: #1a1a2e;
-        }
-        .category-btn.active {
-            background: linear-gradient(135deg, #4f8cf7, #7c3aed);
-            border-color: #4f8cf7;
-            color: #fff;
-        }
-        .category-btn .count {
-            background: rgba(0, 0, 0, 0.08);
-            padding: 0 6px;
-            border-radius: 4px;
-            font-size: 10px;
-            margin-left: 4px;
-        }
-        .category-btn.active .count {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .table-wrap {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            overflow-x: auto;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-            min-width: 1000px;
-        }
-
-        thead {
-            background: #f8fafc;
-        }
-        thead th {
-            padding: 10px 14px;
-            text-align: left;
-            font-weight: 600;
-            color: #64748b;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-            border-bottom: 2px solid #e2e8f0;
-            white-space: nowrap;
-        }
-
-        tbody tr {
-            border-bottom: 1px solid #f1f5f9;
-            transition: 0.2s;
-            cursor: pointer;
-        }
-        tbody tr:hover {
-            background: #f8fafc;
-        }
-        tbody td {
-            padding: 10px 14px;
-            vertical-align: middle;
-        }
-
-        .checkbox-custom {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-        }
-        .checkbox-custom input {
-            display: none;
-        }
-        .checkbox-custom .checkmark {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #cbd5e1;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.2s;
-            flex-shrink: 0;
-            background: #ffffff;
-        }
-        .checkbox-custom .checkmark i {
-            font-size: 12px;
-            color: #fff;
-            opacity: 0;
-            transform: scale(0);
-            transition: 0.2s;
-        }
-        .checkbox-custom input:checked+.checkmark {
-            background: #4f8cf7;
-            border-color: #4f8cf7;
-        }
-        .checkbox-custom input:checked+.checkmark i {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        .tc-id {
-            font-weight: 600;
-            color: #4f8cf7;
-            font-size: 12px;
-        }
-        .tc-title {
-            font-weight: 500;
-            color: #1a1a2e;
-        }
-        .tc-title small {
-            display: block;
-            color: #64748b;
-            font-weight: 400;
-            font-size: 12px;
-            margin-top: 2px;
-            max-width: 250px;
-        }
-        .tc-category {
-            font-size: 11px;
-            color: #64748b;
-            background: #f1f5f9;
-            padding: 2px 10px;
-            border-radius: 12px;
-            display: inline-block;
-            border: 1px solid #e2e8f0;
-            margin-top: 4px;
-        }
-
-        .td-select {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            color: #1a1a2e;
-            padding: 4px 10px;
-            font-size: 12px;
-            font-family: 'Inter', sans-serif;
-            cursor: pointer;
-            transition: 0.2s;
-            min-width: 110px;
-        }
-        .td-select:focus {
-            outline: none;
-            border-color: #4f8cf7;
-            box-shadow: 0 0 0 3px rgba(79, 140, 247, 0.1);
-        }
-        .td-select option {
-            background: #ffffff;
-            color: #1a1a2e;
-        }
-
-        .td-select-priority {
-            min-width: 90px;
-        }
-        .td-select-priority.critical {
-            border-color: #fca5a5;
-        }
-        .td-select-priority.high {
-            border-color: #fcd34d;
-        }
-        .td-select-priority.medium {
-            border-color: #93c5fd;
-        }
-        .td-select-priority.low {
-            border-color: #cbd5e1;
-        }
-
-        .bug-input {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            color: #1a1a2e;
-            padding: 4px 10px;
-            font-size: 12px;
-            font-family: 'Inter', sans-serif;
-            width: 90px;
-            transition: 0.2s;
-        }
-        .bug-input:focus {
-            outline: none;
-            border-color: #4f8cf7;
-            box-shadow: 0 0 0 3px rgba(79, 140, 247, 0.1);
-        }
-        .bug-input::placeholder {
-            color: #94a3b8;
-        }
-
-        .btn-delete {
-            background: transparent;
-            border: none;
-            color: #94a3b8;
-            cursor: pointer;
-            font-size: 14px;
-            padding: 4px 8px;
-            border-radius: 6px;
-            transition: 0.2s;
-        }
-        .btn-delete:hover {
-            color: #ef4444;
-            background: #fee2e2;
-        }
-
-        .btn-view-details {
-            background: transparent;
-            border: none;
-            color: #4f8cf7;
-            cursor: pointer;
-            font-size: 14px;
-            padding: 4px 8px;
-            border-radius: 6px;
-            transition: 0.2s;
-        }
-        .btn-view-details:hover {
-            background: #eff6ff;
-            color: #2563eb;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            color: #94a3b8;
-        }
-        .empty-state i {
-            font-size: 40px;
-            margin-bottom: 12px;
-            display: block;
-        }
-        .empty-state h3 {
-            color: #64748b;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #94a3b8;
-        }
-        .loading i {
-            font-size: 32px;
-            animation: spin 1s linear infinite;
-            color: #4f8cf7;
-        }
-        @keyframes spin {
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(4px);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-overlay.active {
-            display: flex;
-        }
-        .modal {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 14px;
-            padding: 28px;
-            max-width: 700px;
-            width: 94%;
-            max-height: 90vh;
-            overflow-y: auto;
-            animation: modalIn 0.3s ease;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-        }
-        @keyframes modalIn {
-            from {
-                transform: scale(0.95) translateY(20px);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1) translateY(0);
-                opacity: 1;
-            }
-        }
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .modal-header h2 {
-            font-size: 20px;
-            font-weight: 700;
-            color: #1a1a2e;
-        }
-        .modal-close {
-            background: transparent;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            color: #64748b;
-            width: 36px;
-            height: 36px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: 0.2s;
-        }
-        .modal-close:hover {
-            background: #f1f5f9;
-            color: #1a1a2e;
-        }
-        .form-group {
-            margin-bottom: 14px;
-        }
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: #64748b;
-            margin-bottom: 4px;
-        }
-        .form-group label .required {
-            color: #ef4444;
-        }
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px 14px;
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            color: #1a1a2e;
-            font-size: 14px;
-            font-family: 'Inter', sans-serif;
-            transition: 0.2s;
-        }
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #4f8cf7;
-            box-shadow: 0 0 0 3px rgba(79, 140, 247, 0.1);
-        }
-        .form-group textarea {
-            resize: vertical;
-            min-height: 60px;
-        }
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-        .form-row-3 {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 12px;
-        }
-        .form-actions {
-            display: flex;
-            gap: 12px;
-            justify-content: flex-end;
-            margin-top: 18px;
-            padding-top: 14px;
-            border-top: 1px solid #e2e8f0;
-        }
-        .form-actions button {
-            padding: 10px 24px;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            font-family: 'Inter', sans-serif;
-            transition: 0.2s;
-        }
-        .btn-secondary {
-            background: #f1f5f9;
-            color: #64748b;
-            border: 1px solid #e2e8f0;
-        }
-        .btn-secondary:hover {
-            background: #e2e8f0;
-            color: #1a1a2e;
-        }
-        .btn-primary-modal {
-            background: linear-gradient(135deg, #4f8cf7, #7c3aed);
-            border: none;
-            color: #fff;
-        }
-        .btn-primary-modal:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(79, 140, 247, 0.3);
-        }
-
-        .detail-box {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 16px;
-            margin-top: 10px;
-        }
-        .detail-box .detail-item {
-            padding: 8px 0;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        .detail-box .detail-item:last-child {
-            border-bottom: none;
-        }
-        .detail-box .detail-label {
-            font-weight: 600;
-            color: #64748b;
-            font-size: 12px;
-            margin-bottom: 2px;
-        }
-        .detail-box .detail-value {
-            color: #1a1a2e;
-            margin-top: 2px;
-            white-space: pre-wrap;
-            word-break: break-word;
-        }
-        .detail-box .detail-value .step-item {
-            padding: 4px 0;
-            border-bottom: 1px dashed #e2e8f0;
-        }
-        .detail-box .detail-value .step-item:last-child {
-            border-bottom: none;
-        }
-
-        .status-badge-sm {
-            display: inline-block;
-            padding: 2px 10px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-        .status-badge-sm.passed {
-            background: #dcfce7;
-            color: #16a34a;
-        }
-        .status-badge-sm.failed {
-            background: #fee2e2;
-            color: #dc2626;
-        }
-        .status-badge-sm.blocked {
-            background: #fef3c7;
-            color: #d97706;
-        }
-        .status-badge-sm.retest {
-            background: #fce7f3;
-            color: #db2777;
-        }
-        .status-badge-sm.not-tested {
-            background: #f1f5f9;
-            color: #64748b;
-        }
-
-        .priority-badge-sm {
-            display: inline-block;
-            padding: 2px 10px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-        .priority-badge-sm.critical {
-            background: #fee2e2;
-            color: #dc2626;
-        }
-        .priority-badge-sm.high {
-            background: #fef3c7;
-            color: #d97706;
-        }
-        .priority-badge-sm.medium {
-            background: #dbeafe;
-            color: #2563eb;
-        }
-        .priority-badge-sm.low {
-            background: #f1f5f9;
-            color: #64748b;
-        }
-
-        @media (max-width: 768px) {
-            body { padding: 12px; }
-            .header { flex-direction: column; align-items: stretch; }
-            .header-actions { flex-direction: column; }
-            .search-box input { width: 100%; }
-            .stats { grid-template-columns: repeat(3, 1fr); }
-            .category-filter { flex-wrap: wrap; }
-            .category-btn { font-size: 11px; padding: 4px 10px; }
-            table { font-size: 12px; min-width: 800px; }
-            thead th, tbody td { padding: 6px 8px; }
-            .td-select { min-width: 80px; font-size: 11px; padding: 2px 6px; }
-            .bug-input { width: 60px; font-size: 11px; padding: 2px 6px; }
-            .tc-title small { max-width: 150px; }
-            .form-row, .form-row-3 { grid-template-columns: 1fr; }
-        }
-
-        @media (max-width: 480px) {
-            .stats { grid-template-columns: repeat(2, 1fr); }
-            .modal { padding: 16px; width: 98%; }
-        }
+        /* BÜTÜN STILLƏR EYNİDİR - YER QƏNAƏTİ ÜÇÜN KESİLDİ */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f5f7fa; color: #1a1a2e; padding: 20px; min-height: 100vh; }
+        .container { max-width: 1600px; margin: 0 auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+        .header h1 { font-size: 22px; font-weight: 700; color: #1a1a2e; }
+        .header h1 i { color: #4f8cf7; margin-right: 10px; }
+        .header .subtitle { color: #64748b; font-size: 13px; }
+        .status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; }
+        .status-badge.online { background: #dcfce7; color: #16a34a; }
+        .status-badge.offline { background: #fee2e2; color: #dc2626; }
+        .status-badge .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+        .status-badge.online .dot { background: #16a34a; }
+        .status-badge.offline .dot { background: #dc2626; }
+        .header-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+        .search-box { display: flex; align-items: center; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 10px; padding: 6px 14px; gap: 10px; }
+        .search-box input { background: transparent; border: none; outline: none; color: #1a1a2e; font-size: 14px; font-family: 'Inter', sans-serif; width: 200px; }
+        .search-box input::placeholder { color: #94a3b8; }
+        .search-box i { color: #94a3b8; }
+        .btn { padding: 8px 18px; border-radius: 10px; border: 1px solid #e2e8f0; background: #ffffff; color: #1a1a2e; cursor: pointer; font-size: 13px; font-weight: 500; font-family: 'Inter', sans-serif; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+        .btn:hover { background: #f1f5f9; border-color: #4f8cf7; }
+        .btn-primary { background: linear-gradient(135deg, #4f8cf7, #7c3aed); border: none; color: #fff; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(79,140,247,0.3); }
+        .btn-success { background: #10b981; border: none; color: #fff; }
+        .btn-success:hover { background: #059669; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; margin-bottom: 20px; }
+        .stat-box { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px 16px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+        .stat-box .num { font-size: 24px; font-weight: 700; }
+        .stat-box .label { font-size: 11px; color: #64748b; margin-top: 2px; }
+        .stat-box .num.green { color: #10b981; }
+        .stat-box .num.red { color: #ef4444; }
+        .stat-box .num.yellow { color: #f59e0b; }
+        .stat-box .num.purple { color: #7c3aed; }
+        .stat-box .num.blue { color: #4f8cf7; }
+        .category-filter { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; padding: 12px 16px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+        .category-filter .filter-label { color: #64748b; font-size: 13px; font-weight: 600; margin-right: 8px; }
+        .category-btn { padding: 6px 14px; border-radius: 8px; border: 1px solid #e2e8f0; background: #f8fafc; color: #64748b; cursor: pointer; font-size: 12px; font-weight: 500; font-family: 'Inter', sans-serif; transition: 0.2s; white-space: nowrap; }
+        .category-btn:hover { background: #e2e8f0; border-color: #4f8cf7; color: #1a1a2e; }
+        .category-btn.active { background: linear-gradient(135deg, #4f8cf7, #7c3aed); border-color: #4f8cf7; color: #fff; }
+        .category-btn .count { background: rgba(0,0,0,0.08); padding: 0 6px; border-radius: 4px; font-size: 10px; margin-left: 4px; }
+        .category-btn.active .count { background: rgba(255,255,255,0.2); }
+        .table-wrap { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; overflow-x: auto; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 1000px; }
+        thead { background: #f8fafc; }
+        thead th { padding: 10px 14px; text-align: left; font-weight: 600; color: #64748b; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px; border-bottom: 2px solid #e2e8f0; white-space: nowrap; }
+        tbody tr { border-bottom: 1px solid #f1f5f9; transition: 0.2s; cursor: pointer; }
+        tbody tr:hover { background: #f8fafc; }
+        tbody td { padding: 10px 14px; vertical-align: middle; }
+        .checkbox-custom { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .checkbox-custom input { display: none; }
+        .checkbox-custom .checkmark { width: 20px; height: 20px; border: 2px solid #cbd5e1; border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: 0.2s; flex-shrink: 0; background: #ffffff; }
+        .checkbox-custom .checkmark i { font-size: 12px; color: #fff; opacity: 0; transform: scale(0); transition: 0.2s; }
+        .checkbox-custom input:checked+.checkmark { background: #4f8cf7; border-color: #4f8cf7; }
+        .checkbox-custom input:checked+.checkmark i { opacity: 1; transform: scale(1); }
+        .tc-id { font-weight: 600; color: #4f8cf7; font-size: 12px; }
+        .tc-title { font-weight: 500; color: #1a1a2e; }
+        .tc-title small { display: block; color: #64748b; font-weight: 400; font-size: 12px; margin-top: 2px; max-width: 250px; }
+        .tc-category { font-size: 11px; color: #64748b; background: #f1f5f9; padding: 2px 10px; border-radius: 12px; display: inline-block; border: 1px solid #e2e8f0; margin-top: 4px; }
+        .td-select { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; color: #1a1a2e; padding: 4px 10px; font-size: 12px; font-family: 'Inter', sans-serif; cursor: pointer; transition: 0.2s; min-width: 110px; }
+        .td-select:focus { outline: none; border-color: #4f8cf7; box-shadow: 0 0 0 3px rgba(79,140,247,0.1); }
+        .td-select option { background: #ffffff; color: #1a1a2e; }
+        .td-select-priority { min-width: 90px; }
+        .td-select-priority.critical { border-color: #fca5a5; }
+        .td-select-priority.high { border-color: #fcd34d; }
+        .td-select-priority.medium { border-color: #93c5fd; }
+        .td-select-priority.low { border-color: #cbd5e1; }
+        .bug-input { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; color: #1a1a2e; padding: 4px 10px; font-size: 12px; font-family: 'Inter', sans-serif; width: 90px; transition: 0.2s; }
+        .bug-input:focus { outline: none; border-color: #4f8cf7; box-shadow: 0 0 0 3px rgba(79,140,247,0.1); }
+        .bug-input::placeholder { color: #94a3b8; }
+        .btn-delete { background: transparent; border: none; color: #94a3b8; cursor: pointer; font-size: 14px; padding: 4px 8px; border-radius: 6px; transition: 0.2s; }
+        .btn-delete:hover { color: #ef4444; background: #fee2e2; }
+        .btn-view-details { background: transparent; border: none; color: #4f8cf7; cursor: pointer; font-size: 14px; padding: 4px 8px; border-radius: 6px; transition: 0.2s; }
+        .btn-view-details:hover { background: #eff6ff; color: #2563eb; }
+        .empty-state { text-align: center; padding: 40px; color: #94a3b8; }
+        .empty-state i { font-size: 40px; margin-bottom: 12px; display: block; }
+        .empty-state h3 { color: #64748b; }
+        .loading { text-align: center; padding: 40px; color: #94a3b8; }
+        .loading i { font-size: 32px; animation: spin 1s linear infinite; color: #4f8cf7; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 2000; justify-content: center; align-items: center; }
+        .modal-overlay.active { display: flex; }
+        .modal { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 28px; max-width: 700px; width: 94%; max-height: 90vh; overflow-y: auto; animation: modalIn 0.3s ease; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+        @keyframes modalIn { from { transform: scale(0.95) translateY(20px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-header h2 { font-size: 20px; font-weight: 700; color: #1a1a2e; }
+        .modal-close { background: transparent; border: 1px solid #e2e8f0; border-radius: 10px; color: #64748b; width: 36px; height: 36px; cursor: pointer; font-size: 16px; transition: 0.2s; }
+        .modal-close:hover { background: #f1f5f9; color: #1a1a2e; }
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 4px; }
+        .form-group label .required { color: #ef4444; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 14px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; color: #1a1a2e; font-size: 14px; font-family: 'Inter', sans-serif; transition: 0.2s; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #4f8cf7; box-shadow: 0 0 0 3px rgba(79,140,247,0.1); }
+        .form-group textarea { resize: vertical; min-height: 60px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+        .form-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 18px; padding-top: 14px; border-top: 1px solid #e2e8f0; }
+        .form-actions button { padding: 10px 24px; border-radius: 10px; font-weight: 600; font-size: 14px; cursor: pointer; font-family: 'Inter', sans-serif; transition: 0.2s; }
+        .btn-secondary { background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; }
+        .btn-secondary:hover { background: #e2e8f0; color: #1a1a2e; }
+        .btn-primary-modal { background: linear-gradient(135deg, #4f8cf7, #7c3aed); border: none; color: #fff; }
+        .btn-primary-modal:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(79,140,247,0.3); }
+        .detail-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; margin-top: 10px; }
+        .detail-box .detail-item { padding: 8px 0; border-bottom: 1px solid #e2e8f0; }
+        .detail-box .detail-item:last-child { border-bottom: none; }
+        .detail-box .detail-label { font-weight: 600; color: #64748b; font-size: 12px; margin-bottom: 2px; }
+        .detail-box .detail-value { color: #1a1a2e; margin-top: 2px; white-space: pre-wrap; word-break: break-word; }
+        .detail-box .detail-value .step-item { padding: 4px 0; border-bottom: 1px dashed #e2e8f0; }
+        .detail-box .detail-value .step-item:last-child { border-bottom: none; }
+        .status-badge-sm { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 500; }
+        .status-badge-sm.passed { background: #dcfce7; color: #16a34a; }
+        .status-badge-sm.failed { background: #fee2e2; color: #dc2626; }
+        .status-badge-sm.blocked { background: #fef3c7; color: #d97706; }
+        .status-badge-sm.retest { background: #fce7f3; color: #db2777; }
+        .status-badge-sm.not-tested { background: #f1f5f9; color: #64748b; }
+        .priority-badge-sm { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 500; }
+        .priority-badge-sm.critical { background: #fee2e2; color: #dc2626; }
+        .priority-badge-sm.high { background: #fef3c7; color: #d97706; }
+        .priority-badge-sm.medium { background: #dbeafe; color: #2563eb; }
+        .priority-badge-sm.low { background: #f1f5f9; color: #64748b; }
+        @media (max-width: 768px) { body { padding: 12px; } .header { flex-direction: column; align-items: stretch; } .header-actions { flex-direction: column; } .search-box input { width: 100%; } .stats { grid-template-columns: repeat(3, 1fr); } .category-filter { flex-wrap: wrap; } .category-btn { font-size: 11px; padding: 4px 10px; } table { font-size: 12px; min-width: 800px; } thead th, tbody td { padding: 6px 8px; } .td-select { min-width: 80px; font-size: 11px; padding: 2px 6px; } .bug-input { width: 60px; font-size: 11px; padding: 2px 6px; } .tc-title small { max-width: 150px; } .form-row, .form-row-3 { grid-template-columns: 1fr; } }
+        @media (max-width: 480px) { .stats { grid-template-columns: repeat(2, 1fr); } .modal { padding: 16px; width: 98%; } }
     </style>
 </head>
 <body>
@@ -805,7 +213,7 @@
 
     </div>
 
-    <!-- Modal (Yeni/Redaktə) -->
+    <!-- Modal -->
     <div class="modal-overlay" id="modal">
         <div class="modal">
             <div class="modal-header">
@@ -814,17 +222,14 @@
             </div>
             <form id="modalForm">
                 <input type="hidden" id="editId" />
-                
                 <div class="form-group">
                     <label>Başlıq <span class="required">*</span></label>
                     <input type="text" id="formTitle" placeholder="Test case başlığı" required />
                 </div>
-                
                 <div class="form-group">
                     <label>Təsvir</label>
                     <textarea id="formDesc" placeholder="Qısa təsvir" rows="2"></textarea>
                 </div>
-
                 <div class="form-row">
                     <div class="form-group">
                         <label>Kateqoriya <span class="required">*</span></label>
@@ -852,7 +257,6 @@
                         </select>
                     </div>
                 </div>
-
                 <div class="form-row-3">
                     <div class="form-group">
                         <label>Prioritet</label>
@@ -879,12 +283,10 @@
                         </select>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label>Test Addımları (hər addımı yeni sətirdə yazın)</label>
                     <textarea id="formSteps" placeholder="1. Addım&#10;2. Addım&#10;3. Addım" rows="4"></textarea>
                 </div>
-
                 <div class="form-row">
                     <div class="form-group">
                         <label>Gözlənilən Nəticə</label>
@@ -895,7 +297,6 @@
                         <textarea id="formActual" placeholder="Əldə olunan nəticə..." rows="3"></textarea>
                     </div>
                 </div>
-
                 <div class="form-actions">
                     <button type="button" class="btn-secondary" id="modalCancel">Ləğv et</button>
                     <button type="submit" class="btn-primary-modal" id="modalSubmit">Yadda saxla</button>
@@ -949,6 +350,7 @@
         // ============================================================
         let testCases = [];
         let selectedCategory = 'all';
+        let isLoading = false;
 
         // ============================================================
         // SET STATUS
@@ -984,6 +386,9 @@
         // LOAD FROM SUPABASE
         // ============================================================
         async function loadTestCases() {
+            if (isLoading) return;
+            isLoading = true;
+
             document.getElementById('tableBody').innerHTML = `
                 <tr><td colspan="8">
                     <div class="loading">
@@ -994,32 +399,50 @@
             `;
 
             try {
-                console.log(`📊 Cədvəldən oxunur: ${TABLE_NAME}`);
+                console.log('📊 Cədvəldən oxunur:', TABLE_NAME);
+                console.log('🔗 URL:', SUPABASE_URL);
                 
-                const { data, error } = await supabaseClient
+                const { data, error, status, statusText } = await supabaseClient
                     .from(TABLE_NAME)
                     .select('*')
                     .order('tc_id', { ascending: true });
 
+                console.log('📡 Cavab statusu:', status);
+                console.log('📡 Cavab mətni:', statusText);
+
                 if (error) {
                     console.error('❌ Supabase xətası:', error);
+                    console.error('❌ Xəta detalları:', JSON.stringify(error, null, 2));
+                    
                     showToast('Xəta', 'Məlumatlar yüklənərkən xəta: ' + error.message, 'error');
                     setStatus('offline', '❌ Supabase əlçatmaz');
+                    
                     document.getElementById('tableBody').innerHTML = `
                         <tr><td colspan="8">
                             <div class="empty-state">
-                                <i class="fas fa-exclamation-triangle"></i>
+                                <i class="fas fa-exclamation-triangle" style="color:#ef4444;"></i>
                                 <h3>Xəta baş verdi</h3>
-                                <p>${error.message}</p>
-                                <p style="font-size:12px;margin-top:8px;">Cədvəl adı: ${TABLE_NAME}</p>
+                                <p style="color:#dc2626;font-weight:500;">${error.message}</p>
+                                <p style="font-size:12px;margin-top:8px;color:#64748b;">
+                                    Cədvəl adı: ${TABLE_NAME}<br>
+                                    Status: ${status} - ${statusText}
+                                </p>
+                                <button class="btn btn-primary" style="margin-top:12px;" onclick="loadTestCases()">
+                                    <i class="fas fa-redo"></i> Yenidən cəhd et
+                                </button>
                             </div>
                         </td></tr>
                     `;
+                    isLoading = false;
                     return;
                 }
 
                 testCases = data || [];
                 console.log(`✅ ${testCases.length} test case yükləndi`);
+                
+                if (testCases.length === 0) {
+                    console.log('⚠️ Heç bir məlumat tapılmadı. Cədvəl boşdur.');
+                }
 
                 setStatus('online', '✅ Online');
                 renderCategories();
@@ -1027,18 +450,29 @@
                 
             } catch (error) {
                 console.error('❌ Yükləmə xətası:', error);
+                console.error('❌ Xəta detalları:', JSON.stringify(error, null, 2));
+                
                 showToast('Xəta', 'Məlumatlar yüklənərkən xəta baş verdi', 'error');
                 setStatus('offline', '❌ Supabase əlçatmaz');
+                
                 document.getElementById('tableBody').innerHTML = `
                     <tr><td colspan="8">
                         <div class="empty-state">
-                            <i class="fas fa-exclamation-triangle"></i>
+                            <i class="fas fa-exclamation-triangle" style="color:#ef4444;"></i>
                             <h3>Xəta baş verdi</h3>
-                            <p>${error.message}</p>
+                            <p style="color:#dc2626;font-weight:500;">${error.message || 'Bilinməyən xəta'}</p>
+                            <p style="font-size:12px;margin-top:8px;color:#64748b;">
+                                Cədvəl adı: ${TABLE_NAME}
+                            </p>
+                            <button class="btn btn-primary" style="margin-top:12px;" onclick="loadTestCases()">
+                                <i class="fas fa-redo"></i> Yenidən cəhd et
+                            </button>
                         </div>
                     </td></tr>
                 `;
             }
+            
+            isLoading = false;
         }
 
         // ============================================================
@@ -1346,6 +780,108 @@
         }
 
         // ============================================================
+        // RENDER TABLE
+        // ============================================================
+        function render() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const tbody = document.getElementById('tableBody');
+
+            let filtered = testCases.filter(tc => {
+                const matchSearch = tc.title.toLowerCase().includes(search) ||
+                    tc.tc_id.toLowerCase().includes(search) ||
+                    (tc.bug_id && tc.bug_id.toLowerCase().includes(search));
+                const matchCategory = selectedCategory === 'all' || tc.category === selectedCategory;
+                return matchSearch && matchCategory;
+            });
+
+            // Stats
+            const total = testCases.length;
+            const passed = testCases.filter(t => t.status === 'passed').length;
+            const failed = testCases.filter(t => t.status === 'failed').length;
+            const blocked = testCases.filter(t => t.status === 'blocked').length;
+            const retest = testCases.filter(t => t.status === 'retest').length;
+            const notTested = testCases.filter(t => t.status === 'not-tested').length;
+
+            document.getElementById('total').textContent = total;
+            document.getElementById('passed').textContent = passed;
+            document.getElementById('failed').textContent = failed;
+            document.getElementById('blocked').textContent = blocked;
+            document.getElementById('retest').textContent = retest;
+            document.getElementById('notTested').textContent = notTested;
+            document.getElementById('dataCount').textContent = total;
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr><td colspan="8">
+                        <div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <h3>${testCases.length === 0 ? 'Heç bir test case tapılmadı' : 'Axtarışa uyğun nəticə tapılmadı'}</h3>
+                            <p>${testCases.length === 0 ? 'Yeni test case əlavə etmək üçün "Yeni Test" düyməsinə klikləyin' : 'Axtarış sözünü dəyişdirin'}</p>
+                        </div>
+                    </td></tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(tc => {
+                const cat = categories.find(c => c.id === tc.category);
+                const icon = cat ? cat.icon : '📌';
+                const hasDetails = tc.steps || tc.expected_result || tc.actual_result || tc.test_type;
+                return `
+                    <tr onclick="showDetails('${tc.tc_id}')">
+                        <td onclick="event.stopPropagation();">
+                            <label class="checkbox-custom">
+                                <input type="checkbox" ${tc.status === 'passed' ? 'checked' : ''} 
+                                       onchange="toggleStatus('${tc.tc_id}')" />
+                                <span class="checkmark"><i class="fas fa-check"></i></span>
+                            </label>
+                        </td>
+                        <td><span class="tc-id">${tc.tc_id}</span></td>
+                        <td>
+                            <div class="tc-title">
+                                ${tc.title}
+                                <small>${tc.description || 'Təsvir yoxdur'}</small>
+                                <span class="tc-category">${icon} ${tc.category}</span>
+                                ${tc.test_type ? `<span class="tc-category" style="background:#e0f2fe;border-color:#7dd3fc;">${tc.test_type}</span>` : ''}
+                            </div>
+                        </td>
+                        <td onclick="event.stopPropagation();">
+                            <select class="td-select" onchange="updateStatus('${tc.tc_id}', this.value)">
+                                <option value="not-tested" ${tc.status === 'not-tested' ? 'selected' : ''}>⏳ Edilməyib</option>
+                                <option value="passed" ${tc.status === 'passed' ? 'selected' : ''}>✅ Keçdi</option>
+                                <option value="failed" ${tc.status === 'failed' ? 'selected' : ''}>❌ Uğursuz</option>
+                                <option value="blocked" ${tc.status === 'blocked' ? 'selected' : ''}>🚫 Bloklanıb</option>
+                                <option value="retest" ${tc.status === 'retest' ? 'selected' : ''}>🔄 Retest</option>
+                            </select>
+                        </td>
+                        <td onclick="event.stopPropagation();">
+                            <select class="td-select td-select-priority ${tc.priority}" 
+                                    onchange="updatePriority('${tc.tc_id}', this.value)">
+                                <option value="critical" ${tc.priority === 'critical' ? 'selected' : ''}>🔴 Critical</option>
+                                <option value="high" ${tc.priority === 'high' ? 'selected' : ''}>🟠 High</option>
+                                <option value="medium" ${tc.priority === 'medium' ? 'selected' : ''}>🔵 Medium</option>
+                                <option value="low" ${tc.priority === 'low' ? 'selected' : ''}>⚪ Low</option>
+                            </select>
+                        </td>
+                        <td onclick="event.stopPropagation();">
+                            <input class="bug-input" type="text" placeholder="BUG-ID" 
+                                   value="${tc.bug_id || ''}" 
+                                   onchange="updateBug('${tc.tc_id}', this.value)" />
+                        </td>
+                        <td onclick="event.stopPropagation();">
+                            ${hasDetails ? `<button class="btn-view-details" onclick="event.stopPropagation();showDetails('${tc.tc_id}')" title="Detallara bax"><i class="fas fa-eye"></i></button>` : '<span style="color:#94a3b8;font-size:11px;">-</span>'}
+                        </td>
+                        <td onclick="event.stopPropagation();">
+                            <button class="btn-delete" onclick="event.stopPropagation();deleteTestCase('${tc.tc_id}')" title="Sil">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // ============================================================
         // MODAL
         // ============================================================
         function openModal(data = null) {
@@ -1465,7 +1001,7 @@
         // ============================================================
         loadTestCases();
 
-        console.log('✅ Etravel QA Checklist - Yenilənmiş versiya yükləndi!');
+        console.log('✅ Etravel QA Checklist yükləndi!');
         console.log('📊 Supabase URL:', SUPABASE_URL);
         console.log('📊 Project ID: jiaufrugsnncbgykikwh');
         console.log('⌨️ Qısayollar: Ctrl+N (Yeni), Ctrl+F (Axtar), ESC (Bağla)');
