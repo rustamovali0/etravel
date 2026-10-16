@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Query a dedicated Supabase health table and record success."""
+"""Query the app's Supabase table and record success without changing app data."""
 
 import json
 import os
@@ -36,11 +36,13 @@ def main():
 
     base_url = setting("SUPABASE_URL").rstrip("/")
     api_key = setting("SUPABASE_ANON_KEY")
-    table = "etravel_keepalive"
+    table = setting("TABLE_NAME")
     if not re.fullmatch(r"https://[a-z0-9-]+\.supabase\.co", base_url):
         raise ValueError("Expected the app's HTTPS Supabase project URL")
-    # A dedicated table avoids depending on the application's schema or rows.
-    url = f"{base_url}/rest/v1/{table}?{urlencode({'select': 'id', 'limit': 1})}"
+    if not re.fullmatch(r"[a-zA-Z_][a-zA-Z0-9_]*", table):
+        raise ValueError("Invalid Supabase table name")
+    # tc_id is already used by the application. No row contents enter the logs.
+    url = f"{base_url}/rest/v1/{table}?{urlencode({'select': 'tc_id', 'limit': 1})}"
     headers = {"apikey": api_key, "Accept": "application/json", "Cache-Control": "no-cache"}
     # Publishable sb_ keys are API keys, not JWTs. Legacy anon JWTs need both headers.
     if api_key.startswith("eyJ"):
@@ -59,7 +61,7 @@ def main():
             if attempt == 2 or (error.code != 429 and error.code < 500):
                 raise RuntimeError(
                     f"Supabase query failed (HTTP {error.code}). "
-                    "Check project status and apply supabase/keepalive.sql first."
+                    "Check project status, the public API key and table read permissions."
                 ) from None
             print(f"Supabase returned HTTP {error.code}; retrying.")
         except (URLError, TimeoutError):
@@ -73,7 +75,7 @@ def main():
         json.dumps({
             "last_success_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "table": table,
-            "operation": "SELECT id LIMIT 1",
+            "operation": "SELECT tc_id LIMIT 1",
         }, indent=2) + "\n",
         encoding="utf-8",
     )
