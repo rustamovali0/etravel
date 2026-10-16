@@ -1,0 +1,47 @@
+name: Supabase keepalive
+
+on:
+  schedule:
+    # Daily at 06:17 UTC / 10:17 Asia/Baku; the script queries every two UTC dates.
+    - cron: '17 6 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/supabase-keepalive.yml'
+      - 'scripts/supabase_keepalive.py'
+      - 'index.html'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: supabase-keepalive
+  cancel-in-progress: false
+
+jobs:
+  keepalive:
+    if: github.repository == 'rustamovali0/etravel' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out the latest main branch
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: main
+
+      - name: Query the Supabase database
+        run: python3 scripts/supabase_keepalive.py
+
+      - name: Commit the successful check timestamp
+        # Repository activity also keeps public-repository schedules from expiring.
+        run: |
+          git add .github/supabase-keepalive.json
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'chore: record successful Supabase keepalive [skip ci]'
+          git pull --rebase origin main
+          git push origin HEAD:main
