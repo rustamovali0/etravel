@@ -1,5 +1,5 @@
 {
-  "last_success_utc": "2026-10-22T11:51:57+00:00",
+  "last_success_utc": "2026-10-24T10:59:15+00:00",
   "table": "qa_test_cases",
   "operation": "SELECT tc_id LIMIT 1"
 }
